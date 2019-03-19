@@ -625,4 +625,3 @@ var ManualPlugin = (function() {
         initManualTask: initManualTask
     }
 })(jQuery);
-
