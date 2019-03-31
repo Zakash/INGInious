@@ -1,13 +1,10 @@
 import web
 from collections import OrderedDict
 from inginious.frontend.webapp.pages.course_admin.utils import INGIniousAdminPage, get_task_and_lesson
-from inginious.frontend.webapp.pages.tasks import TaskPage as OriginalTaskPage
 from inginious.frontend.webapp.accessible_time import AccessibleTime
 import json
 from datetime import datetime, date, timedelta
 import os
-import pdfkit
-import tempfile
 import datetime
 
 import re
@@ -59,6 +56,7 @@ class DateChangePlugin(INGIniousAdminPage):
         for task in tasks:
             if pattern.match(task):
                 output[task] = course.get_task(task)
+        return output
 
 
 class IndexPage(DateChangePlugin):
@@ -78,8 +76,8 @@ class IndexPage(DateChangePlugin):
         data = json.loads(web.data().decode())
         tasks = self.get_tasks(course)
 
-        self.get_lesson_tasks(course, data['selected_lesson'])
-        for task_id in tasks:
+        filtered_tasks = self.get_lesson_tasks(course, data['selected_lesson'])
+        for task_id in filtered_tasks:
             try:
                 task_data = self.task_factory.get_task_descriptor_content(courseid, task_id)
             except:
@@ -87,7 +85,13 @@ class IndexPage(DateChangePlugin):
             if task_data is None:
                 task_data = {}
 
-            task_data["accessible"] = "{}/{}".format(data["accessible_start"], data["accessible_end"])
+            if data['accessible']=='custom':
+                task_data["accessible"] = "{}/{}".format(data["accessible_start"], data["accessible_end"])
+            elif data['accessible']=='always':
+                task_data["accessible"] = True
+            elif data['accessible']=='never':
+                task_data["accessible"] = False
+
             self.task_factory.update_task_descriptor_content(courseid, task_id, task_data, None)
 
         return json.dumps({'status': 'success'})

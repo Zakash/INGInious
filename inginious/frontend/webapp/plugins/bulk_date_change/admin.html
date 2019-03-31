@@ -26,7 +26,13 @@ $var Navbar: $:NavbarF()
 
 <h2 class="manual-title">Bulk Date Change</h2>
 
-
+<div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="accessible" value="custom" checked>
+        Custom
+      </label>
+    </div>
 
     <div class="lessons container">
         <div class="row container">
@@ -62,6 +68,24 @@ $var Navbar: $:NavbarF()
             </div>
         </div>
     </div>
+</div>
+
+<div class="radio">
+  <label>
+    <input type="radio" name="accessible" value="always">
+    Always
+  </label>
+</div>
+
+<div class="radio">
+  <label>
+    <input type="radio" name="accessible" value="never">
+    Never
+  </label>
+</div>
+
+
+
 
 
                         <div class="panel panel-default">
@@ -78,11 +102,7 @@ $var Navbar: $:NavbarF()
 
 <script>
 
-    <!--ManualPlugins.onSubmitAllBtn();-->
     BulkDateChangePlugin.onClickSave("$:course.get_id()", "$current_lesson");
-    <!--ManualPlugins.onCloseWindow(ManualPlugins.getDefaultFeedbacksValue());-->
-    <!--ManualPlugins.onClickArrowBtn();-->
-    <!--ManualPlugins.onChangeOverallGrade();-->
      \$(function() {
      \$('#accessible_start_picker').datetimepicker({sideBySide: true});
      \$('#accessible_end_picker').datetimepicker({sideBySide: true});
